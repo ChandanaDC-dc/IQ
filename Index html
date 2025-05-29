@@ -1,62 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Live IQ Test</title>
-  <style>
-    body { font-family: Arial; background: #f4f4f4; padding: 20px; text-align: center; }
-    .box { background: #fff; padding: 30px; border-radius: 10px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    input, button { padding: 10px; font-size: 16px; margin-top: 10px; width: 80%; }
-    #result, #score { margin-top: 20px; font-size: 18px; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IQ Test</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <div class="box">
-    <h2>🧠 Live IQ Test (AI Generated)</h2>
-    <div id="questionBox">Loading...</div>
-    <input type="text" id="answerInput" placeholder="Your answer">
-    <br>
+  <div class="container">
+    <h1>Human IQ Test</h1>
+    <div id="question">Loading question...</div>
+    <input type="text" id="answer" placeholder="Your answer"/>
     <button onclick="submitAnswer()">Submit</button>
-    <div id="result"></div>
-    <div id="score"></div>
+    <p id="result"></p>
   </div>
 
-  <script>
-    let currentAnswer = "";
-    let score = 0;
-    let total = 0;
-
-    async function fetchQuestion() {
-      try {
-        const res = await fetch("http://127.0.0.1:5000/api/iq-question");
-        const data = await res.json();
-        if(data.error){
-          document.getElementById("questionBox").innerText = "Error: " + data.error;
-          return;
-        }
-        document.getElementById("questionBox").innerText = data.question;
-        currentAnswer = data.answer.toLowerCase().trim();
-        document.getElementById("result").innerText = "";
-        document.getElementById("answerInput").value = "";
-      } catch (err) {
-        document.getElementById("questionBox").innerText = "Failed to load question.";
-      }
-    }
-
-    function submitAnswer() {
-      const userAnswer = document.getElementById("answerInput").value.toLowerCase().trim();
-      total++;
-      if (userAnswer === currentAnswer) {
-        score++;
-        document.getElementById("result").innerText = "✅ Correct!";
-      } else {
-        document.getElementById("result").innerText = `❌ Incorrect. Answer: ${currentAnswer}`;
-      }
-      const iq = 80 + Math.round((score / total) * 40);
-      document.getElementById("score").innerText = `Score: ${score}/${total} | Estimated IQ: ${iq}`;
-      setTimeout(fetchQuestion, 2000);
-    }
-
-    window.onload = fetchQuestion;
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
+
